@@ -63,6 +63,9 @@ All figures use the shared patient-level split. See the final report for methods
 ## Run it
 
 **Live demo:** https://34-177-82-16.sslip.io/. It runs on a small Google Cloud VM, so segmentation and classification take a few minutes per scan.
+**Initial Login: **
+- Email : Admin@gmail.com
+- Password: Helloworld1234
 
 **Locally** (Python 3.12, Windows):
 
@@ -113,5 +116,5 @@ Working rules: Never commit CT data, model weights, `.env` files or connection s
 |---|---|
 | Runnable system | This repository and the live demo above |
 | Final report | `<add link or file in docs/>` |
-| Presentation video | `<add link>` |
+| Presentation video | `https://drive.google.com/file/d/1-nngIBeUh6E44mQhegeCWoJcx_bzIxkW/view?usp=drive_link` |
 | Slides | `<add link or file in docs/>` |
