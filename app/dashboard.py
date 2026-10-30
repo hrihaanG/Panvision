@@ -210,12 +210,47 @@ def result_cards(reviewed):
             st.caption(detail)
     if similar:
         st.markdown('##### Similar training cases')
-        st.dataframe([
-            {'Patient ID': row['patient_id'],
-             'Dataset label': 'PDAC' if row['label'] == 1 else 'Non-PDAC',
-             'Cosine similarity': f'{row["similarity"]:.4f}'}
-            for row in similar
-        ], hide_index=True, width='stretch')
+        similar_table(similar)
+
+
+def similar_table(similar):
+    st.dataframe([
+        {'Rank': rank, 'Patient ID': row['patient_id'],
+         'Dataset label': 'PDAC' if row['label'] == 1 else 'Non-PDAC',
+         'Cosine similarity': f'{row["similarity"]:.4f}'}
+        for rank, row in enumerate(similar, 1)
+    ], hide_index=True, width='stretch')
+
+
+def similar_cases():
+    reviewed = st.session_state.get('upload_review')
+    heading('Similar cases', 'Nearest training cases to your uploaded scan by DenseNet embedding.')
+    if not reviewed:
+        placeholder('No scan uploaded yet', 'Upload and analyze a CT scan to retrieve similar training cases.', '⊕')
+        st.button('Upload CT scan', type='primary', on_click=navigate, args=('Upload CT',), key='similar_upload')
+        return
+    scan_strip(reviewed)
+    if not reviewed.get('predicted_class'):
+        placeholder('Analysis not run', 'Run the analysis from the case report to retrieve similar training cases.')
+        st.button('Open case report', type='primary', on_click=navigate, args=('Case Report',), key='similar_report')
+        return
+    similar = reviewed.get('similar_cases', [])
+    if not similar:
+        placeholder('No similar cases returned', 'The reference bank had no training cases for this classifier version.')
+        return
+    pdac = sum(row['label'] == 1 for row in similar)
+    left, middle, right = st.columns(3)
+    with left:
+        metric_card('This scan', reviewed['predicted_class'], f'PDAC probability {reviewed["pdac_probability"]:.1%}')
+    with middle:
+        metric_card('Nearest cases labelled PDAC', f'{pdac} of {len(similar)}', 'Dataset labels of the training references')
+    with right:
+        metric_card('Closest match', f'{similar[0]["similarity"]:.4f}', 'Cosine similarity of the top neighbour')
+    with st.container(border=True):
+        st.markdown('##### Nearest training cases')
+        similar_table(similar)
+        st.caption('Neighbours come from the training split only and are matched on the classifier embedding, '
+                   'not on the image directly. Research use only; this is not a diagnosis.')
 
 
 def home(doctor):
@@ -549,8 +584,7 @@ def main():
             heading('My scan history', 'Your uploads, validation results, notes and report activity.')
             scan_history()
         elif page == 'Similar Cases':
-            heading('Similar cases', 'Reference comparison for your uploaded scan.')
-            placeholder('No reference results available', 'Similarity retrieval will appear when the trained model is connected.')
+            similar_cases()
         else:
             uploaded_report()
     except SessionExpired:

@@ -212,3 +212,27 @@ class WorkspaceUITests(unittest.TestCase):
             self.assertFalse(app.exception,[e.message for e in app.exception])
             self.assertEqual(len(app.dataframe),2)
 
+
+    def test_similar_cases_page_states(self):
+        doctor={'id':1,'name':'ABC','email':'abc@example.com','role':'doctor'}
+        scan={'digest':'digest','name':'scan.nii.gz','content':b'ct','array':np.ones((4,8,8)),'spacing':(1,1,2)}
+        with patch('app.dashboard.require_doctor',return_value=doctor),patch('app.dashboard.request') as api:
+            app=AppTest.from_file(APP).run()
+            app.sidebar.radio[0].set_value('Similar Cases').run()
+            self.assertFalse(app.exception,[e.message for e in app.exception])
+            self.assertTrue(any('No scan uploaded yet' in m.value for m in app.markdown))
+            app.session_state['upload_review']=dict(scan)
+            app.run()
+            self.assertTrue(any('Analysis not run' in m.value for m in app.markdown))
+            app.session_state['upload_review']=dict(scan,predicted_class='PDAC',pdac_probability=0.82,
+                classification_threshold=0.5,similar_cases=[
+                    {'patient_id':'100001','label':1,'similarity':0.9512},
+                    {'patient_id':'100002','label':0,'similarity':0.9103},
+                    {'patient_id':'100003','label':1,'similarity':0.8877}])
+            app.run()
+            self.assertFalse(app.exception,[e.message for e in app.exception])
+            self.assertTrue(any('2 of 3' in m.value for m in app.markdown))
+            table=app.dataframe[0].value
+            self.assertEqual(list(table['Patient ID']),['100001','100002','100003'])
+            self.assertEqual(list(table['Dataset label']),['PDAC','Non-PDAC','PDAC'])
+            api.assert_not_called()
