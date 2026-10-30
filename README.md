@@ -63,6 +63,9 @@ All figures use the shared patient-level split. See the final report for methods
 ## Run it
 
 **Live demo:** https://34-177-82-16.sslip.io/. It runs on a small Google Cloud VM, so segmentation and classification take a few minutes per scan.
+**Initial Login: **
+- Email : Admin@gmail.com
+- Password: Helloworld1234
 
 **Locally** (Python 3.12, Windows):
 
@@ -101,7 +104,7 @@ The data come from the public PANORAMA challenge dataset; see the report for the
 
 | Member | Main areas |
 |---|---|
-| Miti | Data preparation and preprocessing, original dashboard, authentication and API, custom CNN and DenseNet-121 experiments, Neon-backed KNN retrieval, end-to-end inference and reporting pipeline |
+| Miti | PANORAMA data preparation, validation, preprocessing, patient-level splitting and QA; custom CNN and DenseNet-121 training and evaluation; DenseNet embedding generation; PostgreSQL/Neon schema and table setup; pgvector-backed KNN similar-case retrieval; original Streamlit dashboard, FastAPI backend, authentication, role-based administration and audit history; orchestration of the end-to-end inference pipeline from NIfTI upload and validation through preprocessing, pancreas-segmentation invocation, predicted-pancreas ROI cropping, DenseNet slice inference, patient-level probability aggregation with the frozen threshold, embedding extraction, top-3 KNN retrieval, Grad-CAM generation, lesion-result display, database history/audit persistence and final report generation |
 | Akshata | Pancreas and lesion segmentation cascade (U-Net, nnU-Net P3), lesion optimisation (threshold and size tuning, augmentation experiments, L2/L5 ensemble), integrating segmentation, lesion inference and the DenseNet-121 classifier into the upload workflow, API, dashboard and report, review notes, dashboard UI improvements, Docker deployment to GCP Compute Engine with GitHub Actions CI/CD, documentation |
 | Hrihaan | Repository setup, ResNet-50 classifier, explainability (Grad-CAM, similar-case evaluation), documentation |
 
@@ -113,5 +116,5 @@ Working rules: Never commit CT data, model weights, `.env` files or connection s
 |---|---|
 | Runnable system | This repository and the live demo above |
 | Final report | `<add link or file in docs/>` |
-| Presentation video | `<add link>` |
+| Presentation video | `https://drive.google.com/file/d/1-nngIBeUh6E44mQhegeCWoJcx_bzIxkW/view?usp=drive_link` |
 | Slides | `<add link or file in docs/>` |
