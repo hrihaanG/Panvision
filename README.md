@@ -101,8 +101,8 @@ The data come from the public PANORAMA challenge dataset; see the report for the
 
 | Member | Main areas |
 |---|---|
-| Miti | Data preparation and preprocessing, original dashboard, authentication and API, custom CNN and DenseNet-121 experiments, Neon-backed KNN retrieval, end-to-end inference and reporting pipeline |
-| Akshata | Pancreas and lesion segmentation cascade (U-Net, nnU-Net P3), lesion optimisation (threshold and size tuning, augmentation experiments, L2/L5 ensemble), integrating segmentation, lesion inference and the DenseNet-121 classifier into the upload workflow, API, dashboard and report, review notes, dashboard UI improvements, Docker deployment to GCP Compute Engine with GitHub Actions CI/CD, documentation |
+| Miti | Data preparation and preprocessing, original dashboard, authentication and API, custom CNN and DenseNet-121 experiments, Neon-backed KNN retrieval, end-to-end inference and reporting pipeline, video showcasing technical use-case and MVP |
+| Akshata | Pancreas and lesion segmentation cascade (U-Net, nnU-Net P3), lesion optimisation (threshold and size tuning, augmentation experiments, L2/L5 ensemble), integrating segmentation, lesion inference and the DenseNet-121 classifier into the upload workflow, API, dashboard and report, review notes, dashboard UI improvements, Docker deployment to GCP Compute Engine via GitHub Actions CI/CD, documentation |
 | Hrihaan | Repository setup, ResNet-50 classifier, explainability (Grad-CAM, similar-case evaluation), documentation |
 
 Working rules: Never commit CT data, model weights, `.env` files or connection strings.
